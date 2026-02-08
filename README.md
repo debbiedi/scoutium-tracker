@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Scoutium Maç Takip Sistemi
 
-## Getting Started
+Video tagging maç takip ve ücret hesaplama web uygulaması.
 
-First, run the development server:
+## Özellikler
+
+- **Maç Ekleme**: Tarih, takım isimleri, süre ve ekran görüntüsü ile maç kaydı
+- **Otomatik Ücret Hesaplama**: Süreye göre otomatik ücret belirleme
+- **Dashboard**: Toplam, aylık ve haftalık kazanç özeti
+- **Takvim Görünümü**: Aylık maç takvimi
+- **Maç Listesi**: Tüm maçları listeleme, düzenleme ve silme
+
+## Ücret Tablosu
+
+| Süre | Ücret |
+|------|-------|
+| 0-25 dakika | ₺120 |
+| 25-45 dakika | ₺240 |
+| 45-70 dakika | ₺360 |
+| 70-90 dakika | ₺480 |
+
+## Kurulum
+
+### 1. Bağımlılıkları Yükle
+
+```bash
+npm install
+```
+
+### 2. Supabase Projesi Oluştur
+
+1. [Supabase](https://supabase.com) hesabı oluşturun
+2. Yeni proje oluşturun
+3. SQL Editor'de `supabase/schema.sql` dosyasını çalıştırın
+4. Storage bölümünde `screenshots` adında public bucket oluşturun
+
+### 3. Environment Variables
+
+`.env.local.example` dosyasını `.env.local` olarak kopyalayın ve Supabase bilgilerinizi ekleyin:
+
+```bash
+cp .env.local.example .env.local
+```
+
+`.env.local` dosyasını düzenleyin:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+Bu değerleri Supabase Dashboard > Settings > API bölümünden alabilirsiniz.
+
+### 4. Geliştirme Sunucusunu Başlat
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Tarayıcıda [http://localhost:3000](http://localhost:3000) adresini açın.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Vercel'e Deploy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. GitHub'a Push
 
-## Learn More
+```bash
+git add .
+git commit -m "Initial commit"
+git push origin main
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Vercel'de Proje Oluştur
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. [Vercel](https://vercel.com) hesabınıza giriş yapın
+2. "New Project" tıklayın
+3. GitHub reponuzu seçin
+4. Environment Variables bölümüne ekleyin:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+5. "Deploy" tıklayın
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Supabase Storage Ayarları
 
-## Deploy on Vercel
+Screenshots bucket için policy eklemeyi unutmayın:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Supabase Dashboard > Storage > screenshots
+2. Policies > New Policy
+3. Aşağıdaki policy'leri ekleyin:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**SELECT (Public Read)**
+```sql
+CREATE POLICY "Public Access" ON storage.objects 
+FOR SELECT USING (bucket_id = 'screenshots');
+```
+
+**INSERT (Upload)**
+```sql
+CREATE POLICY "Allow Uploads" ON storage.objects 
+FOR INSERT WITH CHECK (bucket_id = 'screenshots');
+```
+
+**DELETE**
+```sql
+CREATE POLICY "Allow Deletes" ON storage.objects 
+FOR DELETE USING (bucket_id = 'screenshots');
+```
+
+## Teknolojiler
+
+- **Next.js 14+** - React framework (App Router)
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **Supabase** - Database + Storage
+- **date-fns** - Tarih işleme
+- **Lucide React** - İkonlar
+
+## Lisans
+
+MIT

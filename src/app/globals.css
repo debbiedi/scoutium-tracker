@@ -1,26 +1,491 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Modern Koyu Tema - Yeşil Aksanlı */
+  --background: #f8fafc;
+  --foreground: #1e293b;
+  --card: #ffffff;
+  --card-foreground: #1e293b;
+  --primary: #10b981;
+  --primary-foreground: #ffffff;
+  --primary-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --secondary: #f1f5f9;
+  --secondary-foreground: #475569;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #ecfdf5;
+  --accent-foreground: #065f46;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #10b981;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --gold: #eab308;
+  --sidebar-bg: #0f172a;
+  --sidebar-text: #94a3b8;
+  --sidebar-active: #10b981;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0f172a;
+    --foreground: #f1f5f9;
+    --card: #1e293b;
+    --card-foreground: #f1f5f9;
+    --primary: #10b981;
+    --primary-foreground: #ffffff;
+    --primary-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --secondary: #334155;
+    --secondary-foreground: #e2e8f0;
+    --muted: #334155;
+    --muted-foreground: #94a3b8;
+    --accent: #064e3b;
+    --accent-foreground: #ecfdf5;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #334155;
+    --input: #334155;
+    --ring: #10b981;
+    --success: #10b981;
+    --warning: #fbbf24;
+    --gold: #facc15;
+    --sidebar-bg: #020617;
+    --sidebar-text: #64748b;
+    --sidebar-active: #10b981;
   }
+}
+
+* {
+  border-color: var(--border);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+}
+
+/* Utility classes */
+.card {
+  background: var(--card);
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary-gradient);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--primary-gradient);
+  color: var(--primary-foreground);
+  box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 rgba(16, 185, 129, 0.4);
+}
+
+.btn-secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border: 2px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--muted);
+  border-color: var(--primary);
+}
+
+.btn-destructive {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: var(--destructive-foreground);
+  box-shadow: 0 4px 14px 0 rgba(220, 38, 38, 0.4);
+}
+
+.btn-destructive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 rgba(220, 38, 38, 0.5);
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+  border: 2px solid var(--input);
+  background: var(--card);
+  color: var(--foreground);
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.15);
+}
+
+.input::placeholder {
+  color: var(--muted-foreground);
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+}
+
+/* Table styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+}
+
+.table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.table tr:hover {
+  background: var(--muted);
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-success {
+  background: linear-gradient(135deg, rgba(22, 163, 74, 0.2) 0%, rgba(21, 128, 61, 0.2) 100%);
+  color: var(--success);
+  border: 1px solid rgba(22, 163, 74, 0.3);
+}
+
+.badge-warning {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.2) 100%);
+  color: var(--warning);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-primary {
+  background: linear-gradient(135deg, rgba(22, 163, 74, 0.15) 0%, rgba(21, 128, 61, 0.15) 100%);
+  color: var(--primary);
+  border: 1px solid rgba(22, 163, 74, 0.25);
+}
+
+/* Stats card - Futbol Skorboard Stili */
+.stat-card {
+  background: var(--card);
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary-gradient);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(22, 163, 74, 0.2);
+}
+
+.stat-value {
+  font-size: 2.25rem;
+  font-weight: 800;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  margin-top: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+/* Navigation - Futbol Temalı */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 0;
+  background: var(--primary-gradient);
+  border-radius: 0 4px 4px 0;
+  transition: height 0.2s ease;
+}
+
+.nav-link:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.nav-link:hover::before {
+  height: 60%;
+}
+
+.nav-link.active {
+  background: var(--primary-gradient);
+  color: var(--primary-foreground);
+  box-shadow: 0 4px 12px -2px rgba(22, 163, 74, 0.4);
+}
+
+.nav-link.active::before {
+  display: none;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--muted-foreground);
+}
+
+/* Futbol topu animasyonu */
+.empty-state::before {
+  content: '⚽';
+  display: block;
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Calendar - Futbol Saha Stili */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  border: 2px solid transparent;
+}
+
+.calendar-day:hover {
+  background: var(--muted);
+  border-color: var(--primary);
+  transform: scale(1.05);
+}
+
+.calendar-day.today {
+  background: var(--primary-gradient);
+  color: var(--primary-foreground);
+  font-weight: 700;
+  box-shadow: 0 4px 12px -2px rgba(22, 163, 74, 0.4);
+}
+
+.calendar-day.has-match {
+  background: linear-gradient(135deg, rgba(22, 163, 74, 0.15) 0%, rgba(21, 128, 61, 0.15) 100%);
+  color: var(--success);
+  font-weight: 700;
+  border-color: rgba(22, 163, 74, 0.3);
+}
+
+.calendar-day.has-match::after {
+  content: '⚽';
+  font-size: 0.625rem;
+  margin-top: 2px;
+}
+
+.calendar-day.other-month {
+  color: var(--muted-foreground);
+  opacity: 0.4;
+}
+
+/* Table - Skor Tablosu Stili */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table th {
+  text-align: left;
+  padding: 1rem 1.25rem;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+  background: var(--muted);
+}
+
+.table th:first-child {
+  border-radius: 0.75rem 0 0 0;
+}
+
+.table th:last-child {
+  border-radius: 0 0.75rem 0 0;
+}
+
+.table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s ease;
+}
+
+.table tr:hover td {
+  background: var(--muted);
+}
+
+.table tr:last-child td:first-child {
+  border-radius: 0 0 0 0.75rem;
+}
+
+.table tr:last-child td:last-child {
+  border-radius: 0 0 0.75rem 0;
+}
+
+/* Futbol Sahası Çizgisi Dekorasyon */
+.field-line {
+  position: relative;
+}
+
+.field-line::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2px;
+  background: var(--primary-gradient);
+  border-radius: 2px;
+}
+
+/* Saha dairesi dekorasyonu */
+.field-circle {
+  width: 120px;
+  height: 120px;
+  border: 3px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Altın badge - Kazanç için */
+.gold-text {
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 50%, #eab308 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--success);
 }
