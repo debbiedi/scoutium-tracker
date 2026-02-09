@@ -30,7 +30,7 @@ export function Sidebar() {
 
   return (
     <aside 
-      className="fixed left-0 top-0 h-full w-64 p-4 shadow-2xl transition-colors duration-200 flex flex-col"
+      className="hidden lg:flex fixed left-0 top-0 h-full w-64 p-4 shadow-2xl transition-colors duration-200 flex-col"
       style={{ 
         background: 'var(--sidebar-bg)',
         borderRight: '1px solid var(--sidebar-border)'

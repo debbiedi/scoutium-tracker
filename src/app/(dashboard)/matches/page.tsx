@@ -23,14 +23,14 @@ export default async function MatchesPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Maçlar</h1>
-          <p className="text-[var(--muted-foreground)]">
+          <h1 className="text-xl sm:text-2xl font-bold">Maçlar</h1>
+          <p className="text-sm sm:text-base text-[var(--muted-foreground)]">
             Tüm etiketlenen maçların listesi
           </p>
         </div>
-        <Link href="/matches/new" className="btn btn-primary">
+        <Link href="/matches/new" className="btn btn-primary w-full sm:w-auto">
           <PlusCircle className="h-4 w-4" />
           Yeni Maç Ekle
         </Link>

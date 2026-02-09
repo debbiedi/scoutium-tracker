@@ -193,8 +193,8 @@ export function CalendarView({ matches }: CalendarViewProps) {
             </div>
 
             {/* Week days header */}
-            <div className={viewMode === 'month' ? 'calendar-grid mb-2' : 'grid grid-cols-7 gap-2 mb-2'}>
-              {(viewMode === 'month' ? weekDays : weekDaysFull).map((day) => (
+            <div className={viewMode === 'month' ? 'calendar-grid mb-2' : 'grid grid-cols-7 gap-1 sm:gap-2 mb-2'}>
+              {weekDays.map((day) => (
                 <div
                   key={day}
                   className="py-2 text-center text-xs font-semibold text-slate-500"
@@ -237,7 +237,7 @@ export function CalendarView({ matches }: CalendarViewProps) {
               </div>
             ) : (
               /* Week View - Detailed */
-              <div className="grid grid-cols-7 gap-2">
+              <div className="grid grid-cols-7 gap-1 sm:gap-2">
                 {calendarDays.map((day) => {
                   const dateKey = format(day, 'yyyy-MM-dd')
                   const dayMatches = matchesByDate.get(dateKey) || []
@@ -249,26 +249,26 @@ export function CalendarView({ matches }: CalendarViewProps) {
                     <button
                       key={dateKey}
                       onClick={() => setSelectedDate(day)}
-                      className={`flex flex-col rounded-xl p-3 min-h-[120px] transition-all ${
+                      className={`flex flex-col rounded-lg sm:rounded-xl p-1.5 sm:p-3 min-h-[80px] sm:min-h-[120px] transition-all ${
                         isToday(day)
                           ? 'bg-emerald-50 border-2 border-emerald-500'
                           : hasMatch
                           ? 'bg-emerald-50/50 border border-emerald-200'
                           : 'bg-slate-50 border border-slate-200'
-                      } ${isSelected ? 'ring-2 ring-emerald-500 ring-offset-2' : ''} hover:shadow-md`}
+                      } ${isSelected ? 'ring-2 ring-emerald-500 ring-offset-1 sm:ring-offset-2' : ''} hover:shadow-md`}
                     >
-                      <span className={`text-lg font-bold ${isToday(day) ? 'text-emerald-600' : 'text-slate-700'}`}>
+                      <span className={`text-sm sm:text-lg font-bold ${isToday(day) ? 'text-emerald-600' : 'text-slate-700'}`}>
                         {format(day, 'd')}
                       </span>
                       {hasMatch ? (
-                        <div className="mt-auto space-y-1">
-                          <span className="text-xs text-slate-500">{dayMatches.length} maç</span>
-                          <span className="block text-sm font-bold text-emerald-600">
+                        <div className="mt-auto space-y-0.5 sm:space-y-1">
+                          <span className="hidden sm:block text-xs text-slate-500">{dayMatches.length} maç</span>
+                          <span className="block text-[10px] sm:text-sm font-bold text-emerald-600">
                             {formatCurrency(dayTotal)}
                           </span>
                         </div>
                       ) : (
-                        <span className="mt-auto text-xs text-slate-400">Kayıt yok</span>
+                        <span className="mt-auto text-[10px] sm:text-xs text-slate-400 hidden sm:block">Kayıt yok</span>
                       )}
                     </button>
                   )
@@ -277,24 +277,24 @@ export function CalendarView({ matches }: CalendarViewProps) {
             )}
 
             {/* Stats Summary */}
-            <div className="mt-4 grid grid-cols-3 gap-3">
-              <div className="rounded-lg bg-emerald-50 p-3 text-center">
-                <div className="text-xs text-emerald-600 font-medium">
-                  {viewMode === 'month' ? 'Aylık' : 'Haftalık'} Toplam
+            <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+              <div className="rounded-lg bg-emerald-50 p-2 sm:p-3 text-center">
+                <div className="text-[10px] sm:text-xs text-emerald-600 font-medium">
+                  {viewMode === 'month' ? 'Aylık' : 'Haftalık'}
                 </div>
-                <div className="text-lg font-bold text-emerald-700">
+                <div className="text-sm sm:text-lg font-bold text-emerald-700">
                   {formatCurrency(viewMode === 'month' ? monthlyStats.total : weeklyStats.total)}
                 </div>
               </div>
-              <div className="rounded-lg bg-blue-50 p-3 text-center">
-                <div className="text-xs text-blue-600 font-medium">Maç Sayısı</div>
-                <div className="text-lg font-bold text-blue-700">
+              <div className="rounded-lg bg-blue-50 p-2 sm:p-3 text-center">
+                <div className="text-[10px] sm:text-xs text-blue-600 font-medium">Maç Sayısı</div>
+                <div className="text-sm sm:text-lg font-bold text-blue-700">
                   {viewMode === 'month' ? monthlyStats.count : weeklyStats.count}
                 </div>
               </div>
-              <div className="rounded-lg bg-violet-50 p-3 text-center">
-                <div className="text-xs text-violet-600 font-medium">Ort. Süre</div>
-                <div className="text-lg font-bold text-violet-700">
+              <div className="rounded-lg bg-violet-50 p-2 sm:p-3 text-center">
+                <div className="text-[10px] sm:text-xs text-violet-600 font-medium">Ort. Süre</div>
+                <div className="text-sm sm:text-lg font-bold text-violet-700">
                   {viewMode === 'month' ? monthlyStats.avgDuration : weeklyStats.avgDuration} dk
                 </div>
               </div>

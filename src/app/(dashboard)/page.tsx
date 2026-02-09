@@ -28,14 +28,14 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: 'var(--foreground)' }}>Dashboard</h1>
-          <p style={{ color: 'var(--muted-foreground)' }}>
+          <h1 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--foreground)' }}>Dashboard</h1>
+          <p className="text-sm sm:text-base" style={{ color: 'var(--muted-foreground)' }}>
             Maç takip ve kazanç özeti
           </p>
         </div>
-        <Link href="/matches/new" className="btn btn-primary">
+        <Link href="/matches/new" className="btn btn-primary w-full sm:w-auto">
           <PlusCircle className="h-4 w-4" />
           Yeni Maç Ekle
         </Link>
@@ -62,29 +62,25 @@ export default async function DashboardPage() {
             {recentMatches.map((match, index) => (
               <div
                 key={match.id}
-                className="flex items-center justify-between rounded-lg p-4 transition-all"
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between rounded-lg p-4 transition-all gap-3"
                 style={{ 
                   border: '1px solid var(--border)',
                   background: 'var(--card)'
                 }}
               >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold" style={{ background: 'var(--secondary)', color: 'var(--secondary-foreground)' }}>
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold" style={{ background: 'var(--secondary)', color: 'var(--secondary-foreground)' }}>
                     {index + 1}
                   </div>
-                  <div className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
-                    {formatDate(match.date)}
-                  </div>
-                  <div>
-                    <div className="font-semibold" style={{ color: 'var(--foreground)' }}>{match.team_home}</div>
-                    {match.team_away && (
-                      <div className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
-                        vs {match.team_away}
-                      </div>
-                    )}
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold truncate" style={{ color: 'var(--foreground)' }}>{match.team_home}</div>
+                    <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--muted-foreground)' }}>
+                      <span>{formatDate(match.date)}</span>
+                      {match.team_away && <span className="hidden sm:inline">• vs {match.team_away}</span>}
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 pl-11 sm:pl-0">
                   <span className="rounded-full px-3 py-1 text-xs font-medium" style={{ background: 'var(--secondary)', color: 'var(--secondary-foreground)' }}>
                     {match.duration_minutes} dk
                   </span>

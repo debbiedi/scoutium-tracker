@@ -76,7 +76,85 @@ export function MatchList({ matches }: MatchListProps) {
   }
 
   return (
-    <div className="overflow-x-auto">
+    <>
+      {/* Mobile Card View */}
+      <div className="lg:hidden space-y-3">
+        {matches.map((match) => (
+          <div 
+            key={match.id} 
+            className="rounded-xl p-4 transition-colors"
+            style={{ 
+              background: 'var(--card)',
+              border: '1px solid var(--border)'
+            }}
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div>
+                <div className="font-semibold" style={{ color: 'var(--foreground)' }}>{match.team_home}</div>
+                {match.team_away && (
+                  <div className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
+                    vs {match.team_away}
+                  </div>
+                )}
+              </div>
+              <span className="text-lg font-bold text-emerald-600">
+                {formatCurrency(match.price)}
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-3 mb-3 text-sm" style={{ color: 'var(--muted-foreground)' }}>
+              <span>{formatDate(match.date)}</span>
+              <span className="badge badge-primary">
+                {match.duration_minutes} dk
+              </span>
+              {match.screenshot_url && (
+                <a
+                  href={match.screenshot_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[var(--primary)] hover:underline"
+                >
+                  <Eye className="h-4 w-4" />
+                  SS
+                </a>
+              )}
+            </div>
+            
+            <div className="flex justify-end gap-1 pt-2 border-t" style={{ borderColor: 'var(--border)' }}>
+              <button
+                onClick={() => handleCopy(match)}
+                disabled={copyingId === match.id}
+                className="rounded-md p-2 text-blue-500 transition-colors hover:bg-blue-50"
+                title="Maçı Kopyala"
+              >
+                {copyingId === match.id ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </button>
+              <Link
+                href={`/matches/${match.id}`}
+                className="rounded-md p-2 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--muted)] hover:text-[var(--foreground)]"
+                title="Düzenle"
+              >
+                <Edit className="h-4 w-4" />
+              </Link>
+              <button
+                onClick={() => handleDelete(match.id)}
+                disabled={deletingId === match.id}
+                className="rounded-md p-2 text-[var(--destructive)] transition-colors hover:bg-red-50"
+                title="Sil"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden lg:block overflow-x-auto">
       <table className="table">
         <thead>
           <tr>
@@ -159,6 +237,7 @@ export function MatchList({ matches }: MatchListProps) {
           ))}
         </tbody>
       </table>
-    </div>
+      </div>
+    </>
   )
 }
