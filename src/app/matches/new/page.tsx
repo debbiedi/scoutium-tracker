@@ -1,5 +1,7 @@
 import { MatchForm } from '@/components/MatchForm'
 
+export const dynamic = 'force-dynamic'
+
 export default function NewMatchPage() {
   return (
     <div className="space-y-6">
