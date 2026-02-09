@@ -3,11 +3,10 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { formatCurrency, calculatePrice } from '@/lib/pricing'
 import { formatDate } from '@/lib/utils'
-import { Trash2, Edit, Eye, ExternalLink, Copy, Loader2 } from 'lucide-react'
+import { Trash2, Edit, Copy, Loader2 } from 'lucide-react'
 import { useAuth } from './AuthProvider'
 import type { Match } from '@/types/database'
 
@@ -47,7 +46,6 @@ export function MatchList({ matches }: MatchListProps) {
         team_away: match.team_away,
         duration_minutes: match.duration_minutes,
         price: calculatePrice(match.duration_minutes),
-        screenshot_url: null,
         notes: match.notes,
         user_id: user?.id,
       }
@@ -107,17 +105,6 @@ export function MatchList({ matches }: MatchListProps) {
               <span className="badge badge-primary">
                 {match.duration_minutes} dk
               </span>
-              {match.screenshot_url && (
-                <a
-                  href={match.screenshot_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-[var(--primary)] hover:underline"
-                >
-                  <Eye className="h-4 w-4" />
-                  SS
-                </a>
-              )}
             </div>
             
             <div className="flex justify-end gap-1 pt-2 border-t" style={{ borderColor: 'var(--border)' }}>
@@ -162,7 +149,6 @@ export function MatchList({ matches }: MatchListProps) {
             <th>Maç</th>
             <th>Süre</th>
             <th>Ücret</th>
-            <th>SS</th>
             <th className="text-right">İşlemler</th>
           </tr>
         </thead>
@@ -187,20 +173,6 @@ export function MatchList({ matches }: MatchListProps) {
                 <span className="font-semibold text-[var(--success)]">
                   {formatCurrency(match.price)}
                 </span>
-              </td>
-              <td>
-                {match.screenshot_url ? (
-                  <a
-                    href={match.screenshot_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-sm text-[var(--primary)] hover:underline"
-                  >
-                    <Eye className="h-4 w-4" />
-                  </a>
-                ) : (
-                  <span className="text-[var(--muted-foreground)]">-</span>
-                )}
               </td>
               <td>
                 <div className="flex justify-end gap-1">
