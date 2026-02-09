@@ -23,8 +23,11 @@
   --success: #10b981;
   --warning: #f59e0b;
   --gold: #eab308;
-  --sidebar-bg: #0f172a;
-  --sidebar-text: #94a3b8;
+  --sidebar-bg: #ffffff;
+  --sidebar-text: #475569;
+  --sidebar-hover: #f1f5f9;
+  --sidebar-border: #e2e8f0;
+  --price-bg: #f8fafc;
   --sidebar-active: #10b981;
 }
 

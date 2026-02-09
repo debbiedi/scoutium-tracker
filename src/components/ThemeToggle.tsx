@@ -16,6 +16,11 @@ const lightTheme = {
   '--accent-foreground': '#065f46',
   '--border': '#e2e8f0',
   '--input': '#e2e8f0',
+  '--sidebar-bg': '#ffffff',
+  '--sidebar-text': '#475569',
+  '--sidebar-hover': '#f1f5f9',
+  '--sidebar-border': '#e2e8f0',
+  '--price-bg': '#f8fafc',
 }
 
 const darkTheme = {
@@ -31,6 +36,11 @@ const darkTheme = {
   '--accent-foreground': '#ecfdf5',
   '--border': '#334155',
   '--input': '#334155',
+  '--sidebar-bg': '#0f172a',
+  '--sidebar-text': '#94a3b8',
+  '--sidebar-hover': '#1e293b',
+  '--sidebar-border': '#334155',
+  '--price-bg': '#1e293b',
 }
 
 export function ThemeToggle() {
@@ -64,7 +74,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <button className="p-2 rounded-lg bg-slate-700/50">
+      <button className="p-2 rounded-lg" style={{ background: 'var(--sidebar-hover)' }}>
         <div className="h-5 w-5" />
       </button>
     )
@@ -73,13 +83,14 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg bg-slate-700/50 hover:bg-slate-700 transition-colors"
+      className="p-2 rounded-lg transition-colors"
+      style={{ background: 'var(--sidebar-hover)' }}
       title={isDark ? 'Açık moda geç' : 'Karanlık moda geç'}
     >
       {isDark ? (
         <Sun className="h-5 w-5 text-yellow-400" />
       ) : (
-        <Moon className="h-5 w-5 text-slate-300" />
+        <Moon className="h-5 w-5 text-slate-500" />
       )}
     </button>
   )
