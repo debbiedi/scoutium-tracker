@@ -31,7 +31,10 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const isAuthPage = request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/register'
+  const isAuthPage = request.nextUrl.pathname === '/login' || 
+                     request.nextUrl.pathname === '/register' ||
+                     request.nextUrl.pathname === '/forgot-password' ||
+                     request.nextUrl.pathname === '/reset-password'
 
   // If user is not logged in and trying to access protected route
   if (!user && !isAuthPage) {
