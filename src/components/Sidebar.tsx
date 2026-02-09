@@ -49,23 +49,11 @@ export function Sidebar() {
               className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
                 isActive 
                   ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/30' 
-                  : ''
+                  : 'hover:bg-emerald-50 hover:text-emerald-700'
               }`}
               style={!isActive ? { 
                 color: 'var(--sidebar-text)',
               } : undefined}
-              onMouseEnter={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.background = 'var(--sidebar-hover)'
-                  e.currentTarget.style.color = 'var(--foreground)'
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.color = 'var(--sidebar-text)'
-                }
-              }}
             >
               <Icon className="h-5 w-5" />
               <span>{item.label}</span>
