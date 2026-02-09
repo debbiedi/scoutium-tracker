@@ -5,10 +5,13 @@ export const dynamic = 'force-dynamic'
 
 export default async function CalendarPage() {
   const supabase = await createClient()
+  
+  const { data: { user } } = await supabase.auth.getUser()
 
   const { data: matches, error } = await supabase
     .from('matches')
     .select('*')
+    .eq('user_id', user?.id)
     .order('date', { ascending: false })
 
   if (error) {

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { calculatePrice, formatCurrency, PRICE_TIERS } from '@/lib/pricing'
 import { Upload, X, Loader2, Star } from 'lucide-react'
+import { useAuth } from './AuthProvider'
 import type { Match } from '@/types/database'
 
 interface MatchFormProps {
@@ -16,6 +17,7 @@ export function MatchForm({ match, mode }: MatchFormProps) {
   const router = useRouter()
   const supabase = createClient()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const { user } = useAuth()
 
   const [formData, setFormData] = useState({
     date: match?.date || new Date().toISOString().split('T')[0],
@@ -116,7 +118,7 @@ export function MatchForm({ match, mode }: MatchFormProps) {
       if (mode === 'create') {
         const { error: insertError } = await supabase
           .from('matches')
-          .insert(matchData)
+          .insert({ ...matchData, user_id: user?.id })
 
         if (insertError) throw insertError
       } else {

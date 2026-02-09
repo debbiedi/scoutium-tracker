@@ -9,10 +9,13 @@ export const dynamic = 'force-dynamic'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
+  
+  const { data: { user } } = await supabase.auth.getUser()
 
   const { data: matches, error } = await supabase
     .from('matches')
     .select('*')
+    .eq('user_id', user?.id)
     .order('date', { ascending: false })
 
   if (error) {
@@ -27,8 +30,8 @@ export default async function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Dashboard</h1>
-          <p className="text-slate-500">
+          <h1 className="text-2xl font-bold" style={{ color: 'var(--foreground)' }}>Dashboard</h1>
+          <p style={{ color: 'var(--muted-foreground)' }}>
             Maç takip ve kazanç özeti
           </p>
         </div>
@@ -44,7 +47,7 @@ export default async function DashboardPage() {
       {/* Recent Matches */}
       <div className="card">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-800">Son Maçlar</h2>
+          <h2 className="text-lg font-semibold" style={{ color: 'var(--foreground)' }}>Son Maçlar</h2>
           <Link
             href="/matches"
             className="flex items-center gap-1 text-sm font-medium text-emerald-600 hover:text-emerald-700"
@@ -59,26 +62,30 @@ export default async function DashboardPage() {
             {recentMatches.map((match, index) => (
               <div
                 key={match.id}
-                className="flex items-center justify-between rounded-lg border border-slate-200 p-4 hover:border-emerald-300 hover:bg-slate-50 transition-all"
+                className="flex items-center justify-between rounded-lg p-4 transition-all"
+                style={{ 
+                  border: '1px solid var(--border)',
+                  background: 'var(--card)'
+                }}
               >
                 <div className="flex items-center gap-4">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-sm font-bold text-slate-600">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold" style={{ background: 'var(--secondary)', color: 'var(--secondary-foreground)' }}>
                     {index + 1}
                   </div>
-                  <div className="text-sm text-slate-500">
+                  <div className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
                     {formatDate(match.date)}
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-800">{match.team_home}</div>
+                    <div className="font-semibold" style={{ color: 'var(--foreground)' }}>{match.team_home}</div>
                     {match.team_away && (
-                      <div className="text-sm text-slate-500">
+                      <div className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
                         vs {match.team_away}
                       </div>
                     )}
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                  <span className="rounded-full px-3 py-1 text-xs font-medium" style={{ background: 'var(--secondary)', color: 'var(--secondary-foreground)' }}>
                     {match.duration_minutes} dk
                   </span>
                   <span className="text-lg font-bold text-emerald-600">
@@ -91,8 +98,8 @@ export default async function DashboardPage() {
         ) : (
           <div className="text-center py-12">
             <div className="text-4xl mb-4">⚽</div>
-            <p className="text-slate-600 font-medium">Henüz maç kaydı yok</p>
-            <p className="text-sm text-slate-400 mt-1">İlk maçınızı ekleyerek başlayın!</p>
+            <p className="font-medium" style={{ color: 'var(--foreground)' }}>Henüz maç kaydı yok</p>
+            <p className="text-sm mt-1" style={{ color: 'var(--muted-foreground)' }}>İlk maçınızı ekleyerek başlayın!</p>
             <Link href="/matches/new" className="btn btn-primary mt-6">
               <PlusCircle className="h-4 w-4" />
               İlk Maçı Ekle

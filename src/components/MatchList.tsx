@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { formatCurrency, calculatePrice } from '@/lib/pricing'
 import { formatDate } from '@/lib/utils'
 import { Trash2, Edit, Eye, ExternalLink, Copy, Loader2 } from 'lucide-react'
+import { useAuth } from './AuthProvider'
 import type { Match } from '@/types/database'
 
 interface MatchListProps {
@@ -17,6 +18,7 @@ interface MatchListProps {
 export function MatchList({ matches }: MatchListProps) {
   const router = useRouter()
   const supabase = createClient()
+  const { user } = useAuth()
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [copyingId, setCopyingId] = useState<string | null>(null)
 
@@ -47,6 +49,7 @@ export function MatchList({ matches }: MatchListProps) {
         price: calculatePrice(match.duration_minutes),
         screenshot_url: null,
         notes: match.notes,
+        user_id: user?.id,
       }
 
       const { error } = await supabase.from('matches').insert(newMatch)

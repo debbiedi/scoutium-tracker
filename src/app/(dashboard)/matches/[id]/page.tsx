@@ -11,11 +11,14 @@ interface EditMatchPageProps {
 export default async function EditMatchPage({ params }: EditMatchPageProps) {
   const { id } = await params
   const supabase = await createClient()
+  
+  const { data: { user } } = await supabase.auth.getUser()
 
   const { data: match, error } = await supabase
     .from('matches')
     .select('*')
     .eq('id', id)
+    .eq('user_id', user?.id)
     .single()
 
   if (error || !match) {

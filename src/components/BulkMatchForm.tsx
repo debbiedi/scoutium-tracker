@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { calculatePrice, formatCurrency, PRICE_TIERS } from '@/lib/pricing'
 import { Plus, Trash2, Save, Loader2, AlertCircle, CheckCircle } from 'lucide-react'
+import { useAuth } from './AuthProvider'
 
 interface BulkMatchEntry {
   id: string
@@ -17,6 +18,7 @@ interface BulkMatchEntry {
 export function BulkMatchForm() {
   const router = useRouter()
   const supabase = createClient()
+  const { user } = useAuth()
 
   const createEmptyEntry = (): BulkMatchEntry => ({
     id: crypto.randomUUID(),
@@ -92,6 +94,7 @@ export function BulkMatchForm() {
         price: calculatePrice(entry.duration_minutes),
         screenshot_url: null,
         notes: null,
+        user_id: user?.id,
       }))
 
       const { error: insertError } = await supabase
