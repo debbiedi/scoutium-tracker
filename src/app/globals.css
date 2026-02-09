@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  /* Modern Koyu Tema - Yeşil Aksanlı */
+  /* Modern Açık Tema - Yeşil Aksanlı */
   --background: #f8fafc;
   --foreground: #1e293b;
   --card: #ffffff;
@@ -29,7 +29,7 @@
 }
 
 /* Dark mode - manual toggle */
-.dark {
+html.dark {
   --background: #0f172a;
   --foreground: #f1f5f9;
   --card: #1e293b;
@@ -56,8 +56,9 @@
   --sidebar-active: #10b981;
 }
 
+/* System preference dark mode - only if no manual preference */
 @media (prefers-color-scheme: dark) {
-  :root:not(.light) {
+  html:not(.light) {
     --background: #0f172a;
     --foreground: #f1f5f9;
     --card: #1e293b;
