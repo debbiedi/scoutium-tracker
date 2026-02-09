@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
-import { formatCurrency } from '@/lib/pricing'
+import { formatCurrency, calculatePrice } from '@/lib/pricing'
 import { formatDate } from '@/lib/utils'
-import { Trash2, Edit, Eye, ExternalLink } from 'lucide-react'
+import { Trash2, Edit, Eye, ExternalLink, Copy, Loader2 } from 'lucide-react'
 import type { Match } from '@/types/database'
 
 interface MatchListProps {
@@ -18,6 +18,7 @@ export function MatchList({ matches }: MatchListProps) {
   const router = useRouter()
   const supabase = createClient()
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [copyingId, setCopyingId] = useState<string | null>(null)
 
   const handleDelete = async (id: string) => {
     if (!confirm('Bu maçı silmek istediğinize emin misiniz?')) return
@@ -32,6 +33,30 @@ export function MatchList({ matches }: MatchListProps) {
       alert('Silme işlemi başarısız oldu')
     } finally {
       setDeletingId(null)
+    }
+  }
+
+  const handleCopy = async (match: Match) => {
+    setCopyingId(match.id)
+    try {
+      const newMatch = {
+        date: new Date().toISOString().split('T')[0], // Today's date
+        team_home: match.team_home,
+        team_away: match.team_away,
+        duration_minutes: match.duration_minutes,
+        price: calculatePrice(match.duration_minutes),
+        screenshot_url: null,
+        notes: match.notes,
+      }
+
+      const { error } = await supabase.from('matches').insert(newMatch)
+      if (error) throw error
+      router.refresh()
+    } catch (err) {
+      console.error('Copy error:', err)
+      alert('Kopyalama işlemi başarısız oldu')
+    } finally {
+      setCopyingId(null)
     }
   }
 
@@ -97,10 +122,23 @@ export function MatchList({ matches }: MatchListProps) {
                 )}
               </td>
               <td>
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-end gap-1">
+                  <button
+                    onClick={() => handleCopy(match)}
+                    disabled={copyingId === match.id}
+                    className="rounded-md p-2 text-blue-500 transition-colors hover:bg-blue-50"
+                    title="Maçı Kopyala"
+                  >
+                    {copyingId === match.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </button>
                   <Link
                     href={`/matches/${match.id}`}
                     className="rounded-md p-2 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--muted)] hover:text-[var(--foreground)]"
+                    title="Düzenle"
                   >
                     <Edit className="h-4 w-4" />
                   </Link>
@@ -108,6 +146,7 @@ export function MatchList({ matches }: MatchListProps) {
                     onClick={() => handleDelete(match.id)}
                     disabled={deletingId === match.id}
                     className="rounded-md p-2 text-[var(--destructive)] transition-colors hover:bg-red-50"
+                    title="Sil"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>

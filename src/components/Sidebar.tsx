@@ -2,12 +2,14 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, List, PlusCircle, Calendar, Trophy } from 'lucide-react'
+import { LayoutDashboard, List, PlusCircle, Calendar, Trophy, Layers } from 'lucide-react'
+import { ThemeToggle } from './ThemeToggle'
 
 const navItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/matches', label: 'Maçlar', icon: List },
   { href: '/matches/new', label: 'Yeni Maç', icon: PlusCircle },
+  { href: '/matches/bulk', label: 'Toplu Ekle', icon: Layers },
   { href: '/calendar', label: 'Takvim', icon: Calendar },
 ]
 
@@ -50,6 +52,14 @@ export function Sidebar() {
           )
         })}
       </nav>
+
+      {/* Theme Toggle */}
+      <div className="mt-6 px-4">
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-slate-500">Tema</span>
+          <ThemeToggle />
+        </div>
+      </div>
 
       {/* Ücret Tablosu */}
       <div className="absolute bottom-4 left-4 right-4">

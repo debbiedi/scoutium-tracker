@@ -28,8 +28,36 @@
   --sidebar-active: #10b981;
 }
 
+/* Dark mode - manual toggle */
+.dark {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card: #1e293b;
+  --card-foreground: #f1f5f9;
+  --primary: #10b981;
+  --primary-foreground: #ffffff;
+  --primary-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --secondary: #334155;
+  --secondary-foreground: #e2e8f0;
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  --accent: #064e3b;
+  --accent-foreground: #ecfdf5;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #334155;
+  --input: #334155;
+  --ring: #10b981;
+  --success: #10b981;
+  --warning: #fbbf24;
+  --gold: #facc15;
+  --sidebar-bg: #020617;
+  --sidebar-text: #64748b;
+  --sidebar-active: #10b981;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --background: #0f172a;
     --foreground: #f1f5f9;
     --card: #1e293b;

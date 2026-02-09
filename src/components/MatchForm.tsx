@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { calculatePrice, formatCurrency, PRICE_TIERS } from '@/lib/pricing'
-import { Upload, X, Loader2 } from 'lucide-react'
+import { Upload, X, Loader2, Star } from 'lucide-react'
 import type { Match } from '@/types/database'
 
 interface MatchFormProps {
@@ -31,6 +31,21 @@ export function MatchForm({ match, mode }: MatchFormProps) {
   )
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [savedTeams, setSavedTeams] = useState<string[]>([])
+
+  // Load saved teams from localStorage
+  useEffect(() => {
+    const teams = JSON.parse(localStorage.getItem('savedTeams') || '[]')
+    setSavedTeams(teams)
+  }, [])
+
+  // Save teams to localStorage
+  const saveTeamsToStorage = () => {
+    const newTeams = new Set([...savedTeams])
+    if (formData.team_home) newTeams.add(formData.team_home)
+    if (formData.team_away) newTeams.add(formData.team_away)
+    localStorage.setItem('savedTeams', JSON.stringify([...newTeams]))
+  }
 
   const calculatedPrice = calculatePrice(formData.duration_minutes)
 
@@ -113,6 +128,9 @@ export function MatchForm({ match, mode }: MatchFormProps) {
         if (updateError) throw updateError
       }
 
+      // Save teams to localStorage
+      saveTeamsToStorage()
+
       router.push('/matches')
       router.refresh()
     } catch (err) {
@@ -189,6 +207,7 @@ export function MatchForm({ match, mode }: MatchFormProps) {
             onChange={(e) =>
               setFormData({ ...formData, team_home: e.target.value })
             }
+            list="saved-teams-list"
             required
           />
         </div>
@@ -207,9 +226,17 @@ export function MatchForm({ match, mode }: MatchFormProps) {
             onChange={(e) =>
               setFormData({ ...formData, team_away: e.target.value })
             }
+            list="saved-teams-list"
           />
         </div>
       </div>
+
+      {/* Saved Teams Datalist */}
+      <datalist id="saved-teams-list">
+        {savedTeams.map((team) => (
+          <option key={team} value={team} />
+        ))}
+      </datalist>
 
       {/* Notlar */}
       <div>
